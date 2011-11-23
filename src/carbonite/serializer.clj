@@ -12,7 +12,7 @@
            [clojure.lang Keyword Symbol PersistentArrayMap
             PersistentHashMap MapEntry PersistentStructMap 
             PersistentVector PersistentHashSet
-            Cons PersistentList PersistentList$EmptyList
+            Cons PersistentList PersistentList$EmptyList ArraySeq
             ArraySeq$ArraySeq_int LazySeq IteratorSeq StringSeq]))
 
 (defn clj-print
