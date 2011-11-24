@@ -50,7 +50,7 @@
   ([^Kryo registry obj]
      (let [buffer (ObjectBuffer. registry)]
        (.writeClassAndObject buffer obj)))
-  ([^Kyro registry byte-buffer obj]
+  ([^Kryo registry byte-buffer obj]
     (.writeClassAndObject registry byte-buffer obj)))
 
 (defn read-buffer
