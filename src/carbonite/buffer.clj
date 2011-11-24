@@ -22,9 +22,9 @@
 
 ;;;; cached buffer settings
 
-(def ^:dynamic *initial-buffer* 1024)
-(def ^:dynamic *max-buffer* (* 512 1024 1024))  ;; max item can be 512MB
-(def ^:dynamic *keep-buffer* (* 128 1024)) ;; never keep a buffer bigger than 128KB
+(def *initial-buffer* 1024)
+(def *max-buffer* (* 512 1024 1024))  ;; max item can be 512MB
+(def *keep-buffer* (* 128 1024)) ;; never keep a buffer bigger than 128KB
 
 (defn ensure-buffer
   "Create or return a Thread-specific scratch buffer for a kryo registry"
