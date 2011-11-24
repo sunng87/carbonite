@@ -47,15 +47,15 @@
 (defn write-buffer
   "Write serialized obj into ByteBuffer using registry.  If the buffer is not big enough,
    a SerializationException will be thrown."
-  ([registry obj]
+  ([^Kryo registry obj]
      (let [buffer (ObjectBuffer. registry)]
        (.writeClassAndObject buffer obj)))
-  ([registry byte-buffer obj]
+  ([^Kyro registry byte-buffer obj]
     (.writeClassAndObject registry byte-buffer obj)))
 
 (defn read-buffer
   "Read serialized object from byte-buffer using registry."
-  [registry byte-buffer]
+  [^Kryo registry byte-buffer]
   (.readClassAndObject registry byte-buffer))
 
 
