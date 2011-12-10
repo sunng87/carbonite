@@ -1,4 +1,4 @@
-(defproject info.sunng/carbonite "0.1.0"
+(defproject info.sunng/carbonite "0.1.1-SNAPSHOT"
   :description "Write Clojure data to and from bytes using Kryo."
   :dependencies [[org.clojure/clojure "1.2.1"]
                  [com.googlecode/kryo "1.04"]]
