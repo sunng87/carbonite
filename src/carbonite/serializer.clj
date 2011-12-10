@@ -7,7 +7,7 @@
            [java.nio ByteBuffer BufferOverflowException]
            [java.math BigDecimal BigInteger]
            [java.net URI]
-           [java.util Date]
+           [java.util Date UUID]
            [java.sql Time Timestamp]
            [clojure.lang Keyword Symbol PersistentArrayMap
             PersistentHashMap MapEntry PersistentStructMap 
@@ -105,6 +105,17 @@
     (readObjectData [buffer type]
       (URI/create (StringSerializer/get buffer)))))
 
+(def ^{:doc "Define a Kryo Serializer for java.net.UUID."}
+  uuid-serializer
+  (proxy [Serializer] []
+    (writeObjectData [buffer ^UUID uuid]
+      (LongSerializer/put buffer (.getMostSignificantBits uuid) false)
+      (LongSerializer/put buffer (.getLeastSignificantBits uuid) false))
+    (readObjectData [buffer type]
+      (UUID. (LongSerializer/get buffer false)
+             (LongSerializer/get buffer false)))))
+
+
 (def ^{:doc
        "Define a Kryo Serializer for java.sql.Timestamp"}
   timestamp-serializer
@@ -126,11 +137,22 @@
       (let [constructor (.getConstructor klass (into-array Class [Long/TYPE]))]
         (.newInstance constructor (object-array [ (LongSerializer/get buffer true)]))))))
 
+(defn intern-type-serializer
+  "Serialize clojure intern types"
+  [value-function intern-function]
+  (proxy [Serializer] []
+    (writeObjectData [buffer ^Keyword k]
+      (StringSerializer/put buffer (value-function k)))
+    (readObjectData [buffer type]
+      (intern-function (StringSerializer/get buffer)))))
+
 (def ^{:doc
        "Define a map of Clojure primitives and their serializers to install."}
   clojure-primitives
-  {Keyword clojure-reader-serializer
-   Symbol clojure-reader-serializer})
+  {Keyword (intern-type-serializer
+            #(.getName ^Keyword %) #(Keyword/intern ^String %))
+   Symbol (intern-type-serializer
+           #(.toString ^Symbol %) #(Symbol/intern ^String %))})
 
 (def java-primitives
   {BigDecimal (BigDecimalSerializer.)
@@ -139,7 +161,8 @@
    Timestamp timestamp-serializer
    java.sql.Date (sqldate-serializer java.sql.Date)
    java.sql.Time (sqldate-serializer java.sql.Time)
-   URI uri-serializer})
+   URI uri-serializer
+   UUID uuid-serializer})
 
 (defn clojure-collections
   [registry]
