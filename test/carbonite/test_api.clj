@@ -24,7 +24,9 @@
        nil
        1      ;; long
        5.2    ;; double
+       #'+    ;; Var
        5M     ;; BigDecimal
+       (/ 1 2) ;; Ratio
        1000000000000000000000000  ;; BigInt
        :foo   ;; keyword
        :a/foo ;; namespaced keyword
@@ -55,7 +57,7 @@
        (struct-map mystruct :a 1 :b 2)  ;; PersistentStructMap
        {:a 1 :b 2 :c 3 :d 4 :e 5 :f 6 :g 7 :h 8 :i 9} ;; PersistentArrayMap
        (seq "abc") ;; StringSeq       
-       )) 
+       ))
 
 (deftest test-roundtrip-iterator-seq
   (let [coll (java.util.ArrayList.)

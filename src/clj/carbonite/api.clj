@@ -38,8 +38,8 @@
       (.setRegistrationOptional true))))
 
 (defn default-registry
-  "Create or install a set of default serializers in an existing registry.  Modifies and
-   returns the registry instance."
+  "Create or install a set of default serializers in an existing
+   registry.  Modifies and returns the registry instance."
   ([]
      (default-registry (new-registry)))
   ([registry]
@@ -68,7 +68,6 @@
   "Read serialized object from byte-buffer using registry."
   [^Kryo registry byte-buffer]
   (.readClassAndObject registry byte-buffer))
-
 
 ;; Copyright 2011 Revelytix, Inc.
 ;;

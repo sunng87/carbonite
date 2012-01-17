@@ -4,3 +4,7 @@ pom.xml
 /classes/
 .lein-failures
 .lein-deps-sum
+*.iml
+*.iws
+*.ipr
+.DS_Store
