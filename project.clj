@@ -1,4 +1,4 @@
-(defproject cascalog/carbonite "1.0.5"
+(defproject info.sunng/carbonite "0.2.1"
   :source-path "src/clj"
   :java-source-path "src/jvm"
   :description "Write Clojure data to and from bytes using Kryo."
