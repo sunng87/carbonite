@@ -2,6 +2,7 @@
   (:require [clojure.string :as s])
   (:use [carbonite.serializer])
   (:import [com.esotericsoftware.kryo Kryo Serializer ObjectBuffer]
+           [com.esotericsoftware.kryo.compress DeflateCompressor]
            [java.nio ByteBuffer]))
 
 ;;;; Creating a Kryo registry
@@ -47,6 +48,23 @@
        (register-serializers clojure-primitives)
        (register-serializers java-primitives)
        (register-serializers (clojure-collections registry)))))
+
+(defn- mapmap [fk fv m]
+  (into {} (for [[k v] m] [(fk k) (fv v)])))
+
+(defn compressed-registry
+  "Create or install a set of compression enabled serializers."
+  ([]
+     (compressed-registry (new-registry)))
+  ([registry]
+     (doto registry
+       (register-serializers
+        (mapmap identity #(DeflateCompressor. %) clojure-primitives))
+       (register-serializers
+        (mapmap identity #(DeflateCompressor. %) java-primitives))
+       (register-serializers
+        (mapmap identity #(DeflateCompressor. %)
+                                  (clojure-collections registry))))))
 
 ;;;; APIs to read and write objects using ByteBuffers
 
