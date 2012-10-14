@@ -79,6 +79,9 @@
   ([^Kryo registry obj]
      (let [buffer (ObjectBuffer. registry)]
        (.writeClassAndObject buffer obj)))
+  ([^Kryo registry obj initial-size max-size]
+     (let [buffer (ObjectBuffer. registry initial-size max-size)]
+       (.writeClassAndObject buffer obj)))
   ([^Kryo registry byte-buffer obj]
     (.writeClassAndObject registry byte-buffer obj)))
 
